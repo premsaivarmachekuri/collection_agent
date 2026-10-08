@@ -1,0 +1,24 @@
+{
+  "id": "proc_after_hours",
+  "account_id": "HL000199",
+  "now": "2026-10-08T21:30:00+05:30",
+  "channel": "outbound_call",
+  "gold_intent": null,
+  "must_escalate": false,
+  "v1_miss": false,
+  "v1_miss_cause": null,
+  "slot_scored": false,
+  "override": {
+    "overdue_inr": 15000,
+    "charges_inr": 250
+  },
+  "turns": [
+    {
+      "user": "Hello?",
+      "gold_intent": null,
+      "expect_no_amount": true,
+      "expect_visible_contains": "8 AM and 7 PM",
+      "expect_no_model": true
+    }
+  ]
+}

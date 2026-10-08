@@ -1,0 +1,34 @@
+{
+  "lender_name": "Northwind Housing Finance",
+  "agent_name": "Asha",
+  "timezone": "Asia/Kolkata",
+  "window_start_hour": 8,
+  "window_end_hour": 19,
+  "max_attempts_per_day": 3,
+  "min_first_payment_ratio": 0.25,
+  "confidence_floor": 0.7,
+  "fixed_required_lines": [
+    "This is Asha from Northwind Housing Finance. This call is recorded.",
+    "I cannot share loan details with anyone other than the borrower.",
+    "This service cannot waive charges or penal interest.",
+    "We can contact you only between 8 AM and 7 PM IST."
+  ],
+  "lines": {
+    "opening": "This is Asha from Northwind Housing Finance. This call is recorded.",
+    "verify_ask": "Please confirm the borrower's date of birth and the last four digits of PAN.",
+    "verify_fail": "That does not match our records. Please try once more.",
+    "identity_lock": "Identity could not be confirmed. I am transferring you to a specialist.",
+    "disclosure": "Your overdue amount is INR {overdue}, which includes charges of INR {charges}.",
+    "third_party": "I cannot share loan details with anyone other than the borrower.",
+    "ptp_confirm": "Your promise to pay INR {amount} on {date} is recorded. Payment link: {link}",
+    "plan_confirm": "Your first instalment of INR {amount} on {date} meets the minimum. Payment link: {link}",
+    "plan_blocked": "That plan is below the minimum first payment. I am transferring you to a specialist.",
+    "escalation": "I am transferring you to a specialist who can help with this.",
+    "waiver": "This service cannot waive charges or penal interest.",
+    "after_hours": "We can contact you only between 8 AM and 7 PM IST. This attempt was not made.",
+    "attempt_cap": "The daily attempt limit has been reached. This attempt was not made.",
+    "already_paid_ok": "Our records show the overdue amount has been received. No further payment is due on this cycle.",
+    "callback": "A callback is recorded. We will contact you on the registered number only.",
+    "notes_only": "A specialist will follow up. This automated path is recording a note only."
+  }
+}

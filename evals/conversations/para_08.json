@@ -1,0 +1,40 @@
+{
+  "id": "para_08",
+  "account_id": "HL000008",
+  "now": "2026-10-08T11:00:00+05:30",
+  "channel": "inbound_chat",
+  "gold_intent": "already_paid",
+  "must_escalate": true,
+  "v1_miss": true,
+  "v1_miss_cause": "No v1 payment phrase. The date is explicit. Ledger disagrees, so this cannot be closed by the bot.",
+  "slot_scored": false,
+  "override": {
+    "dob": "1984-06-15",
+    "pan_last4": "4242",
+    "overdue_inr": 10000,
+    "charges_inr": 250,
+    "last_payment_inr": 0,
+    "last_payment_date": null
+  },
+  "turns": [
+    {
+      "user": "Hello, this is the borrower.",
+      "gold_intent": null
+    },
+    {
+      "user": "Date of birth 1984-06-15 and PAN last four 4242.",
+      "gold_intent": null,
+      "expect_verified": true,
+      "expect_disclosure": true
+    },
+    {
+      "user": "Check your ledger, it went through on 7 October.",
+      "gold_intent": "already_paid",
+      "gold_amount": null,
+      "gold_date": "2026-10-07",
+      "expect_escalate": true,
+      "expect_link": false,
+      "expect_no_amount": true
+    }
+  ]
+}

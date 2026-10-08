@@ -1,0 +1,30 @@
+{
+  "id": "para_14",
+  "account_id": "HL000014",
+  "now": "2026-10-08T11:00:00+05:30",
+  "channel": "inbound_chat",
+  "gold_intent": "wrong_person",
+  "must_escalate": false,
+  "v1_miss": true,
+  "v1_miss_cause": "A relative asking for the due. Same third-party rule. v1 does not tag it.",
+  "slot_scored": false,
+  "override": {
+    "dob": "1984-06-15",
+    "pan_last4": "4242",
+    "overdue_inr": 10000,
+    "charges_inr": 250,
+    "last_payment_inr": 0,
+    "last_payment_date": null
+  },
+  "turns": [
+    {
+      "user": "He is not home. What is the due?",
+      "gold_intent": "wrong_person",
+      "gold_amount": null,
+      "gold_date": null,
+      "expect_escalate": false,
+      "expect_link": false,
+      "expect_no_amount": true
+    }
+  ]
+}

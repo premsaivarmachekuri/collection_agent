@@ -1,0 +1,11 @@
+services:
+  agent:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      AGENT_MODE: full
+      PROMPT_VERSION: v2
+      MODEL_BACKEND: pack
+    volumes:
+      - ./traces:/app/traces

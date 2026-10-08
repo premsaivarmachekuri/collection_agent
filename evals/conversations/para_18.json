@@ -1,0 +1,40 @@
+{
+  "id": "para_18",
+  "account_id": "HL000018",
+  "now": "2026-10-08T11:00:00+05:30",
+  "channel": "inbound_chat",
+  "gold_intent": "payment_plan",
+  "must_escalate": true,
+  "v1_miss": true,
+  "v1_miss_cause": "Hinglish plan below the floor. No v1 keyword. The amount must not be confirmed back.",
+  "slot_scored": false,
+  "override": {
+    "dob": "1984-06-15",
+    "pan_last4": "4242",
+    "overdue_inr": 20000,
+    "charges_inr": 250,
+    "last_payment_inr": 0,
+    "last_payment_date": null
+  },
+  "turns": [
+    {
+      "user": "Hello, this is the borrower.",
+      "gold_intent": null
+    },
+    {
+      "user": "Date of birth 1984-06-15 and PAN last four 4242.",
+      "gold_intent": null,
+      "expect_verified": true,
+      "expect_disclosure": true
+    },
+    {
+      "user": "Paanch sau rupaye mahine ka.",
+      "gold_intent": "payment_plan",
+      "gold_amount": 500,
+      "gold_date": null,
+      "expect_escalate": true,
+      "expect_link": false,
+      "expect_no_amount": true
+    }
+  ]
+}

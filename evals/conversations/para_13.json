@@ -1,0 +1,30 @@
+{
+  "id": "para_13",
+  "account_id": "HL000013",
+  "now": "2026-10-08T11:00:00+05:30",
+  "channel": "inbound_chat",
+  "gold_intent": "wrong_person",
+  "must_escalate": false,
+  "v1_miss": true,
+  "v1_miss_cause": "Third party, not the v1 phrase 'wrong number'. The rule must refuse with no balance, even when v1 misses the intent.",
+  "slot_scored": false,
+  "override": {
+    "dob": "1984-06-15",
+    "pan_last4": "4242",
+    "overdue_inr": 10000,
+    "charges_inr": 250,
+    "last_payment_inr": 0,
+    "last_payment_date": null
+  },
+  "turns": [
+    {
+      "user": "I am his wife. How much does he owe?",
+      "gold_intent": "wrong_person",
+      "gold_amount": null,
+      "gold_date": null,
+      "expect_escalate": false,
+      "expect_link": false,
+      "expect_no_amount": true
+    }
+  ]
+}

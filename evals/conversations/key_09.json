@@ -1,0 +1,40 @@
+{
+  "id": "key_09",
+  "account_id": "HL000109",
+  "now": "2026-10-08T11:00:00+05:30",
+  "channel": "inbound_chat",
+  "gold_intent": "promise_to_pay",
+  "must_escalate": false,
+  "v1_miss": false,
+  "v1_miss_cause": null,
+  "slot_scored": true,
+  "override": {
+    "dob": "1984-06-15",
+    "pan_last4": "4242",
+    "overdue_inr": 16000,
+    "charges_inr": 250,
+    "last_payment_inr": 0,
+    "last_payment_date": null
+  },
+  "turns": [
+    {
+      "user": "Hello, this is the borrower.",
+      "gold_intent": null
+    },
+    {
+      "user": "Date of birth 1984-06-15 and PAN last four 4242.",
+      "gold_intent": null,
+      "expect_verified": true,
+      "expect_disclosure": true
+    },
+    {
+      "user": "I will pay INR 16000 on 22 October.",
+      "gold_intent": "promise_to_pay",
+      "gold_amount": 16000,
+      "gold_date": "2026-10-22",
+      "expect_escalate": false,
+      "expect_link": true,
+      "expect_no_amount": false
+    }
+  ]
+}

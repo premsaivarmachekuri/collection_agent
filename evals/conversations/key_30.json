@@ -1,0 +1,40 @@
+{
+  "id": "key_30",
+  "account_id": "HL000130",
+  "now": "2026-10-08T11:00:00+05:30",
+  "channel": "inbound_chat",
+  "gold_intent": "hardship",
+  "must_escalate": true,
+  "v1_miss": false,
+  "v1_miss_cause": null,
+  "slot_scored": false,
+  "override": {
+    "dob": "1984-06-15",
+    "pan_last4": "4242",
+    "overdue_inr": 10000,
+    "charges_inr": 250,
+    "last_payment_inr": 0,
+    "last_payment_date": null
+  },
+  "turns": [
+    {
+      "user": "Hello, this is the borrower.",
+      "gold_intent": null
+    },
+    {
+      "user": "Date of birth 1984-06-15 and PAN last four 4242.",
+      "gold_intent": null,
+      "expect_verified": true,
+      "expect_disclosure": true
+    },
+    {
+      "user": "I lost my job and the EMI bounced.",
+      "gold_intent": "hardship",
+      "gold_amount": null,
+      "gold_date": null,
+      "expect_escalate": true,
+      "expect_link": false,
+      "expect_no_amount": true
+    }
+  ]
+}

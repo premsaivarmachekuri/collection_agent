@@ -1,0 +1,40 @@
+{
+  "id": "para_04",
+  "account_id": "HL000004",
+  "now": "2026-10-08T11:00:00+05:30",
+  "channel": "inbound_chat",
+  "gold_intent": "promise_to_pay",
+  "must_escalate": false,
+  "v1_miss": true,
+  "v1_miss_cause": "Hindi 'kal' plus 'pay kar dunga'. v1 does not treat this as a promise and does not map kal to a date.",
+  "slot_scored": true,
+  "override": {
+    "dob": "1984-06-15",
+    "pan_last4": "4242",
+    "overdue_inr": 15000,
+    "charges_inr": 250,
+    "last_payment_inr": 0,
+    "last_payment_date": null
+  },
+  "turns": [
+    {
+      "user": "Hello, this is the borrower.",
+      "gold_intent": null
+    },
+    {
+      "user": "Date of birth 1984-06-15 and PAN last four 4242.",
+      "gold_intent": null,
+      "expect_verified": true,
+      "expect_disclosure": true
+    },
+    {
+      "user": "Kal pay kar dunga, full.",
+      "gold_intent": "promise_to_pay",
+      "gold_amount": 15000,
+      "gold_date": "2026-10-09",
+      "expect_escalate": false,
+      "expect_link": true,
+      "expect_no_amount": false
+    }
+  ]
+}

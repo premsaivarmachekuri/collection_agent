@@ -1,0 +1,6 @@
+Keyword baseline. Not a production prompt.
+Match only these phrases:
+promise to pay, i will pay, i'll pay, already paid, i paid, lost my job, hardship,
+dispute, wrong number, call me back, callback, complaint, payment plan, per month.
+Do not paraphrase. Do not normalise dates.
+This file intentionally omits the production required lines so it cannot be shipped.

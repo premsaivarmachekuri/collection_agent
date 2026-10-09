@@ -62,7 +62,7 @@ class GroqModel:
     """Direct call to Groq. Not LiteLLM. Policy still owns the borrower-facing text."""
 
     def __init__(self, model_name: str | None = None) -> None:
-        self.model_name = model_name or os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
+        self.model_name = model_name or os.environ.get("GROQ_MODEL", "qwen/qwen3.8-27b")
         self.api_key = os.environ.get("GROQ_API_KEY", "")
 
     def classify(self, text: str, today) -> Classification:
@@ -76,7 +76,10 @@ class GroqModel:
             f"Today is {today.isoformat()}. Resolve relative dates against that day. "
             'Keys: intent, confidence, amount, date, full_amount, draft.'
         )
-        payload = _groq_chat(self.api_key, self.model_name, system, text)
+        try:
+            payload = _groq_chat(self.api_key, self.model_name, system, text)
+        except GroqError as exc:
+            raise RuntimeError(str(exc)) from exc
         intent = payload.get("intent")
         if intent not in INTENTS:
             intent = None
@@ -96,7 +99,12 @@ class GroqModel:
         )
 
 
+class GroqError(RuntimeError):
+    pass
+
+
 def _groq_chat(api_key: str, model_name: str, system: str, user: str) -> dict:
+    import urllib.error
     import urllib.request
 
     body = json.dumps(
@@ -116,13 +124,41 @@ def _groq_chat(api_key: str, model_name: str, system: str, user: str) -> dict:
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            # Cloudflare returns 403 code 1010 for the default Python user agent.
+            "User-Agent": "collection-agent/0.1",
         },
         method="POST",
     )
-    with urllib.request.urlopen(request, timeout=8) as response:
-        raw = json.loads(response.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            raw = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")[:500]
+        if exc.code == 404:
+            raise GroqError(
+                f"Groq does not serve {model_name}. "
+                "Set GROQ_MODEL in .env to a model on your account, such as qwen/qwen3.8-27b. "
+                f"Groq said: {detail}"
+            ) from exc
+        if exc.code == 403:
+            raise GroqError(
+                "Groq returned 403. The key was not accepted, or the client was blocked. "
+                f"Groq said: {detail}"
+            ) from exc
+        raise GroqError(f"Groq returned {exc.code}: {detail}") from exc
     content = raw["choices"][0]["message"]["content"]
-    return json.loads(content)
+    return _json_object(content)
+
+
+def _json_object(content: str) -> dict:
+    try:
+        return json.loads(content)
+    except json.JSONDecodeError:
+        start = content.find("{")
+        end = content.rfind("}")
+        if start >= 0 and end > start:
+            return json.loads(content[start : end + 1])
+        raise
 
 
 class LiteLLMModel:

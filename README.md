@@ -28,7 +28,7 @@ On Windows that is the build gate. `make gate` calls the same script if you have
 | Promised date and amount | >= 90% |
 | Local reply latency p95 | < 2.5 s |
 
-The default classifier is instruction pack v2. It needs no API key. `MODEL_BACKEND=litellm` and `LITELLM_MODEL` switch the classifier through LiteLLM. `MODEL_BACKEND=groq` calls `https://api.groq.com` directly, with `GROQ_API_KEY` and optional `GROQ_MODEL` (default `llama-3.1-8b-instant`). The tool router does not change. Hosted latency is not part of `make gate`.
+The default classifier is instruction pack v2. It needs no API key. `MODEL_BACKEND=litellm` and `LITELLM_MODEL` switch the classifier through LiteLLM. `MODEL_BACKEND=groq` calls `https://api.groq.com` directly, with `GROQ_API_KEY` and optional `GROQ_MODEL` (default `qwen/qwen3.8-27b`). `llama-3.1-8b-instant` is not on current Groq accounts and returns 404. The tool router does not change. Hosted latency is not part of `make gate`.
 
 ```bash
 copy .env.example .env

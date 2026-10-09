@@ -28,7 +28,19 @@ On Windows that is the build gate. `make gate` calls the same script if you have
 | Promised date and amount | >= 90% |
 | Local reply latency p95 | < 2.5 s |
 
-The default classifier is instruction pack v2. It needs no API key. `MODEL_BACKEND=litellm` and `LITELLM_MODEL` switch the classifier. The tool router does not change. Hosted latency is not part of `make gate`.
+The default classifier is instruction pack v2. It needs no API key. `MODEL_BACKEND=litellm` and `LITELLM_MODEL` switch the classifier through LiteLLM. `MODEL_BACKEND=groq` calls `https://api.groq.com` directly, with `GROQ_API_KEY` and optional `GROQ_MODEL` (default `llama-3.1-8b-instant`). The tool router does not change. Hosted latency is not part of `make gate`.
+
+```bash
+copy .env.example .env
+```
+
+Paste the key into `.env` next to `GROQ_API_KEY`. Set `GROQ_MODEL` on the next line. `.env` is not committed. Leave `MODEL_BACKEND=pack` if you still want `python scripts/gate.py` to stay offline. `scripts/say_groq.py` calls Groq either way.
+
+```bash
+python scripts/say_groq.py "I will pay INR 18400 on 9 October."
+```
+
+That script prints Groq's classification. The draft is not what the borrower hears.
 
 ## Two-minute demo
 

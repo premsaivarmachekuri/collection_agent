@@ -3,9 +3,11 @@ services:
     build: .
     ports:
       - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
     environment:
       AGENT_MODE: full
       PROMPT_VERSION: v2
-      MODEL_BACKEND: pack
     volumes:
       - ./traces:/app/traces

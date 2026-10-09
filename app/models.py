@@ -58,6 +58,73 @@ class PackModel:
         return _v2_classify(text, today)
 
 
+class GroqModel:
+    """Direct call to Groq. Not LiteLLM. Policy still owns the borrower-facing text."""
+
+    def __init__(self, model_name: str | None = None) -> None:
+        self.model_name = model_name or os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
+        self.api_key = os.environ.get("GROQ_API_KEY", "")
+
+    def classify(self, text: str, today) -> Classification:
+        if not self.api_key:
+            raise RuntimeError("GROQ_API_KEY is not set. The offline pack is still the default.")
+        from app.config import PROMPTS_DIR
+
+        system = (PROMPTS_DIR / "v2.txt").read_text(encoding="utf-8")
+        system += (
+            "\nReturn one JSON object and nothing else. "
+            f"Today is {today.isoformat()}. Resolve relative dates against that day. "
+            'Keys: intent, confidence, amount, date, full_amount, draft.'
+        )
+        payload = _groq_chat(self.api_key, self.model_name, system, text)
+        intent = payload.get("intent")
+        if intent not in INTENTS:
+            intent = None
+        amount = payload.get("amount")
+        if isinstance(amount, str) and amount.isdigit():
+            amount = int(amount)
+        if not isinstance(amount, int):
+            amount = None
+        return Classification(
+            intent=intent,
+            confidence=float(payload.get("confidence") or 0.0),
+            amount=amount,
+            date=payload.get("date") or None,
+            full_amount=bool(payload.get("full_amount")),
+            draft=str(payload.get("draft") or ""),
+            backend=f"groq:{self.model_name}",
+        )
+
+
+def _groq_chat(api_key: str, model_name: str, system: str, user: str) -> dict:
+    import urllib.request
+
+    body = json.dumps(
+        {
+            "model": model_name,
+            "temperature": 0,
+            "response_format": {"type": "json_object"},
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+        }
+    ).encode("utf-8")
+    request = urllib.request.Request(
+        "https://api.groq.com/openai/v1/chat/completions",
+        data=body,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=8) as response:
+        raw = json.loads(response.read().decode("utf-8"))
+    content = raw["choices"][0]["message"]["content"]
+    return json.loads(content)
+
+
 class LiteLLMModel:
     """Optional live backend. The gate does not use this unless MODEL_BACKEND=litellm."""
 
@@ -96,6 +163,8 @@ class LiteLLMModel:
 
 def build_model(version: str, backend: str | None = None):
     chosen = backend or os.environ.get("MODEL_BACKEND", "pack")
+    if chosen == "groq":
+        return GroqModel(os.environ.get("GROQ_MODEL"))
     if chosen == "litellm":
         return LiteLLMModel(os.environ.get("LITELLM_MODEL", "gpt-4o-mini"))
     return PackModel(version)
